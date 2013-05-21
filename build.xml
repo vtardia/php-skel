@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${project.name}" default="hello" basedir="./">
+
+    <!-- Load project settings from external file -->
+    <property file="build/config/project.properties"/>
+
+    <!-- Default empty target -->
+    <target name="hello" description="Displays basic project information">
+        <echo message="Hello, welcome to ${phing.project.name}!"/>
+        <echo message="Current environment is: ${project.env}"/>
+        <echo message="Edit the build.xml and build/config/project.properties with your settings"/>
+    </target>
+
+    <!-- Sync the project file with a remotehost -->
+    <target name="update" description="Sync the project file with the remote host">
+        <echo message="Updating project to '${app.home}'..."/>
+
+		<!-- Set default LISTONLY to false -->
+        <property name="listonly" value="false" override="true" />
+
+        <!-- Get timestamp -->
+        <tstamp/>
+
+        <!-- Set default VERBOSE flag to TRUE -->
+        <if>
+            <not>
+                <isset property="sync.verbose"/>
+            </not>
+            <then>
+                <property name="sync.verbose" value="true" override="true"/>
+                <echo message="The value of sync.verbose has been set to true"/>
+            </then>
+        </if>
+
+        <!-- Set default DELETE flag to FALSE -->
+        <if>
+            <not>
+                <isset property="sync.delete"/>
+            </not>
+            <then>
+                <property name="sync.delete" value="false" override="true"/>
+                <echo message="The value of sync.delete has been set to false"/>
+            </then>
+        </if>
+        <!-- Get auth info, password will be always required -->
+        <property name="sync.remote.auth" value="${sync.remote.user}@${sync.remote.host}"/>
+        <!-- Perform Sync -->
+        <!-- See: http://fedecarg.com/wiki/filesynctask -->
+        <taskdef name="sync" classname="phing.tasks.ext.FileSyncTask"/>
+        <sync sourcedir="${sync.source.projectdir}" destinationdir="${sync.remote.auth}:${sync.destination.projectdir}" listonly="${listonly}" excludefile="${sync.exclude.file}" delete="${sync.delete}" verbose="${sync.verbose}"/>
+    </target>
+</project>

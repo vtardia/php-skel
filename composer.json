@@ -1,0 +1,11 @@
+{
+    "name": "vtardia/php-skel",
+    "description": "PHP Skeleton Project buildable with Phing",
+    "license" : "MIT",
+    "authors": [
+        {
+            "name": "Vito Tardia",
+            "email": "info@vtardia.com"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+.DS_Store
+.svn
+.git
+
+README*
+build*
+docs
+
+vendor/phing*
+vendor/bin*
